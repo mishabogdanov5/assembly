@@ -1,23 +1,24 @@
+CC = riscv64-unknown-elf-gcc
 AS = riscv64-unknown-elf-as
-LD = riscv64-unknown-elf-ld
 QEMU = qemu-riscv64
 
-SRCS = accerman.s rv_runtime.s
-OBJS = $(SRCS:.s=.o) 
-TARGET = prog  
+CFLAGS = -Wall -Wextra -nostdlib -ffreestanding
+ASFLAGS = -march=rv64gc -mabi=lp64d
+LDFLAGS = -nostdlib -T link.ld -static
+
+SRC = src/accerman.s
+TEST = tests/test_accerman.c
+TARGET = test_accerman
 
 all: $(TARGET)
 
-%.o: %.s
-	$(AS) -o $@ $<
-
-$(TARGET): $(OBJS)
-	$(LD) -o $@ $^
+$(TARGET): $(TEST) $(SRC)
+	$(CC) $(CFLAGS) $(LDFLAGS) $^ -o $@
 
 run: $(TARGET)
 	$(QEMU) $(TARGET)
 
 clean:
-	rm -f $(OBJS) $(TARGET)
+	rm -f $(TARGET)
 
 .PHONY: all run clean
