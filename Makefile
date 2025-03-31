@@ -1,21 +1,23 @@
-# Компилятор и утилиты
-CC = riscv64-unknown-elf-gcc
 AS = riscv64-unknown-elf-as
 LD = riscv64-unknown-elf-ld
 QEMU = qemu-riscv64
 
-TARGET = amd64
+SRCS = accerman.s rv_runtime.s
+OBJS = $(SRCS:.s=.o) 
+TARGET = prog  
 
 all: $(TARGET)
 
-$(TARGET).o: $(TARGET).s
+%.o: %.s
 	$(AS) -o $@ $<
 
-$(TARGET): $(TARGET).o
-	$(LD) -o $@ $<
+$(TARGET): $(OBJS)
+	$(LD) -o $@ $^
 
 run: $(TARGET)
-	$(QEMU) $<
+	$(QEMU) $(TARGET)
 
 clean:
-	rm -f *.o $(TARGET)
+	rm -f $(OBJS) $(TARGET)
+
+.PHONY: all run clean
