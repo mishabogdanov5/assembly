@@ -16,9 +16,11 @@ jobs:
       - name: Install RISC-V toolchain
         run: |
           sudo apt-get update
-          sudo apt-get install -y gcc-riscv64-unknown-elf qemu-user-static
+          sudo apt-get install -y \
+            gcc-riscv64-unknown-elf \
+            qemu-user
 
-      - name: Build project
-        run: make
       - name: Run tests
-        run: make run
+        run: |
+          make
+          make test
