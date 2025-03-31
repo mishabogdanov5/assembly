@@ -28,5 +28,12 @@ void main()
         asm volatile("li a7, 93\nli a0, 4\necall");
     }
 
+    result = accerman(0, 9);
+
+    if (result != 6)
+    {
+        asm volatile("li a7, 93\nli a0, 5\necall");
+    }
+
     asm volatile("li a7, 93\nli a0, 0\necall");
 }
