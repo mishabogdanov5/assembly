@@ -60,5 +60,5 @@ default:
 
 .section .bss
 stack_bottom:
-    .space 131072 
+    .space 1048576 
 stack_top:
